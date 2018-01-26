@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["jack@jackchristensen.com"]
 
   spec.summary       = %q{Friendly enum type system}
-  spec.homepage      = "https://github.com/jackc/meta_enum"
+  spec.homepage      = "https://github.com/ccsalespro/meta_enum"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|

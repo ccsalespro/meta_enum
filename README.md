@@ -1,8 +1,7 @@
 # MetaEnum
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/meta_enum`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+MetaEnum is a library for handling enum types in Ruby. It makes it easy to
+convert between external numbers and internal names.
 
 ## Installation
 
@@ -22,7 +21,59 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Create a enum type:
+
+```ruby
+require 'meta_enum'
+
+ColorType = MetaEnum::Type.new(red: 0, green: 1, blue: 2)
+```
+
+Use the `[]` operator to lookup a value by name:
+
+```ruby
+ColorType[:green] # => #<MetaEnum::Value: 1 => green}>
+```
+
+Or lookup by number:
+
+```ruby
+ColorType[1] # => #<MetaEnum::Value: 1 => green}>
+```
+
+Values can also be easily compared with numbers or names:
+
+```ruby
+ColorType[:green] == 1 # => true
+ColorType[:green] == :green # => true
+```
+
+Missing names would almost always be a programming error, so that will raise an exception.
+
+```ruby
+ColorType[:purple] # => raises: KeyError: key not found: :purple
+```
+
+But missing numbers could mean that there are values defined externally we do not know about. So it is preferable not to raise an exception.
+
+```ruby
+ColorType[42] # => #<MetaEnum::MissingValue: 42}>
+```
+
+Number and name can be retrieved from a `MetaEnum::Value`
+
+```ruby
+v = ColorType[:red] # => #<MetaEnum::Value: 0 => red}>
+v.number # => 0
+v.name # => :red
+```
+
+Values can have extra associated data.
+
+```ruby
+AgeType = MetaEnum::Type.new(child: [0, "Less than 18"], adult: [1, "At least 18"])
+AgeType[:child].data # => "Less than 18"
+```
 
 ## Development
 
@@ -32,7 +83,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/meta_enum.
+Bug reports and pull requests are welcome on GitHub at https://github.com/ccsalespro/meta_enum.
 
 ## License
 
