@@ -1,9 +1,9 @@
 module MetaEnum
   class MissingValue
-    attr_reader :code, :type
+    attr_reader :number, :type
 
-    def initialize(code, type)
-      @code = Integer(code)
+    def initialize(number, type)
+      @number = Integer(number)
       @type = type
       freeze
     end
@@ -13,7 +13,7 @@ module MetaEnum
 
     def ==(other)
       other = type[other]
-      code == other.code && type == other.type
+      number == other.number && type == other.type
 
     # type[] will raise for certain bad keys. Those are obviously not equal so return false.
     rescue ArgumentError, KeyError

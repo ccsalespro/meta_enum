@@ -1,9 +1,9 @@
 module MetaEnum
   class Value
-    attr_reader :code, :name, :data, :type
+    attr_reader :number, :name, :data, :type
 
-    def initialize(code, name, data, type)
-      @code = Integer(code)
+    def initialize(number, name, data, type)
+      @number = Integer(number)
       @name = name.to_sym
       @data = data
       @type = type

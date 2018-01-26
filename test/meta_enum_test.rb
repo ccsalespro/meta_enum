@@ -7,9 +7,9 @@ class MetaEnumTest < Minitest::Test
 
   def colors_type
     ::MetaEnum::Type.new [
-      {code: 0, name: :red},
-      {code: 1, name: :green},
-      {code: 2, name: :blue}
+      {number: 0, name: :red},
+      {number: 1, name: :green},
+      {number: 2, name: :blue}
     ]
   end
 
@@ -26,20 +26,20 @@ class MetaEnumTest < Minitest::Test
 
   def test_type_index_finds_by_number
     type = colors_type
-    red = type.values_by_code[0]
+    red = type.values_by_number[0]
     assert_equal red, type[0]
   end
 
   def test_type_index_finds_by_string_converted_to_number
     type = colors_type
-    red = type.values_by_code[0]
+    red = type.values_by_number[0]
     assert_equal red, type["0"]
   end
 
   def test_type_index_missing_number_converted_to_unknown_value
     type = colors_type
     value = type[4]
-    assert_equal 4, value.code
+    assert_equal 4, value.number
     assert_equal :missing_value, value.name
   end
 
