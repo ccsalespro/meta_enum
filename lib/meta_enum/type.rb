@@ -65,7 +65,7 @@ module MetaEnum
     end
 
     def inspect
-      sprintf('#<%s: {%s}>', self.class, values.to_a.map { |v| "#{v.number} => #{v.name}"}.join(", "))
+      sprintf('#<%s: {%s}>', self.class, values.to_a.map { |v| "#{v.name}: #{v.number}"}.join(", "))
     end
 
     def size
