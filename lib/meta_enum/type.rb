@@ -4,14 +4,23 @@ module MetaEnum
   class Type
     attr_reader :values, :values_by_number, :values_by_name
 
-    # values is a array of hashes containing :number, :name, and optionally :data keys.
+    # Initialize takes a single hash of name to number.
+    #
+    # e.g. MetaEnum::Type.new(red: 0, green: 1, blue: 2)
+    #
+    # Additional data can also be associated with each value by passing an array
+    # of [number, extra data]. This can be used for additional description or
+    # any other reason.
+    #
+    # e.g. MetaEnum::Type.new(small: [0, "Less than 10], large: [1, "At least 10"]
     def initialize(values)
       @values_by_number = {}
       @values_by_name = {}
       @values = Set.new
 
-      values.each do |e|
-        v = Value.new e.fetch(:number), e.fetch(:name), e[:data], self
+      values.each do |name, number_and_data|
+        number_and_data = Array(number_and_data)
+        v = Value.new number_and_data[0], name, number_and_data[1], self
         raise ArgumentError, "duplicate number: #{v.number}" if @values_by_number.key? v.number
         raise ArgumentError, "duplicate name: #{v.name}" if @values_by_name.key? v.name
         @values_by_number[v.number] = v
