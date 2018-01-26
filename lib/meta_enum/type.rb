@@ -54,5 +54,9 @@ module MetaEnum
         values_by_number.fetch(key) { MissingValue.new key, self }
       end
     end
+
+    def inspect
+      sprintf('#<%s: {%s}>', self.class, values.to_a.map { |v| "#{v.number} => #{v.name}"}.join(", "))
+    end
   end
 end
