@@ -12,7 +12,12 @@ module MetaEnum
     def data; nil; end
 
     def ==(other)
+      other = type[other]
       code == other.code && type == other.type
+
+    # type[] will raise for certain bad keys. Those are obviously not equal so return false.
+    rescue ArgumentError, KeyError
+      false
     end
   end
 end

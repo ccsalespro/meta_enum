@@ -44,8 +44,8 @@ module MetaEnum
     # See #values_by_code and #values_by_name for non-fuzzy value selection.
     def [](key)
       case key
-      when Value
-        raise ArgumentError, "wrong type" unless @values.include?(key)
+      when Value, MissingValue
+        raise ArgumentError, "wrong type" unless key.type == self
         key
       when Symbol
         values_by_name.fetch(key)

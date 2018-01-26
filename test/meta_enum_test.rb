@@ -66,4 +66,17 @@ class MetaEnumTest < Minitest::Test
     assert_equal type[0], 0
     refute_equal type[0], 1
   end
+
+  def test_missing_value_equality
+    type = colors_type
+    assert_equal type[42], type[42]
+    refute_equal type[42], type[41]
+  end
+
+  def test_missing_value_equality_with_number
+    type = colors_type
+    assert_equal type[42], 42
+    refute_equal type[42], 17
+    refute_equal type[42], 1
+  end
 end
