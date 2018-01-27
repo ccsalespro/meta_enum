@@ -23,7 +23,7 @@ module MetaEnum
     def to_s; name.to_s; end
 
     def inspect
-      "#<#{self.class}: #{value}}>"
+      "#<#{self.class}: #{value.inspect}}>"
     end
   end
 end

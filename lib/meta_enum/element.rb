@@ -21,7 +21,7 @@ module MetaEnum
     def to_s; name.to_s; end
 
     def inspect
-      "#<#{self.class}: #{name}: #{value}, data: #{data.inspect}>"
+      "#<#{self.class}: #{name}: #{value.inspect}, data: #{data.inspect}>"
     end
   end
 end
