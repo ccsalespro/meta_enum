@@ -32,13 +32,13 @@ ColorType = MetaEnum::Type.new(red: 0, green: 1, blue: 2)
 Use the `[]` operator to lookup a value by name:
 
 ```ruby
-ColorType[:green] # => #<MetaEnum::Value: 1 => green}>
+ColorType[:green] # => #<MetaEnum::Element: 1 => green}>
 ```
 
 Or lookup by number:
 
 ```ruby
-ColorType[1] # => #<MetaEnum::Value: 1 => green}>
+ColorType[1] # => #<MetaEnum::Element: 1 => green}>
 ```
 
 Values can also be easily compared with numbers or names:
@@ -60,11 +60,11 @@ But missing numbers could mean that there are values defined externally we do no
 ColorType[42] # => #<MetaEnum::MissingValue: 42}>
 ```
 
-Number and name can be retrieved from a `MetaEnum::Value`
+Value and name can be retrieved from a `MetaEnum::Element`
 
 ```ruby
-v = ColorType[:red] # => #<MetaEnum::Value: 0 => red}>
-v.number # => 0
+v = ColorType[:red] # => #<MetaEnum::Element: 0 => red}>
+v.value # => 0
 v.name # => :red
 ```
 
@@ -73,6 +73,15 @@ Values can have extra associated data.
 ```ruby
 AgeType = MetaEnum::Type.new(child: [0, "Less than 18"], adult: [1, "At least 18"])
 AgeType[:child].data # => "Less than 18"
+```
+
+Non-integer values can be enabled by passing a value_normalizer to `MetaEnum::Type.new`. For example, to use string values:
+
+```ruby
+CardType = MetaEnum::Type.new({visa: "VS", mastercard: "MC", discover: "DS"}, value_normalizer: method(:String))
+CardType[:visa] # => #<MetaEnum::Element: visa: "VS", data: nil>
+CardType["VS"] # => #<MetaEnum::Element: visa: "VS", data: nil>
+pry(main)> CardType["VS"].value # => "VS"
 ```
 
 ## Development
