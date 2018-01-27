@@ -1,7 +1,7 @@
 # MetaEnum
 
 MetaEnum is a library for handling enum types in Ruby. It makes it easy to
-convert between external numbers and internal names.
+convert between external values and internal names.
 
 ## Installation
 
@@ -41,7 +41,7 @@ Or lookup by number:
 ColorType[1] # => #<MetaEnum::Element: 1 => green}>
 ```
 
-Values can also be easily compared with numbers or names:
+Elements can also be easily compared with values or names:
 
 ```ruby
 ColorType[:green] == 1 # => true
@@ -54,10 +54,10 @@ Missing names would almost always be a programming error, so that will raise an 
 ColorType[:purple] # => raises: KeyError: key not found: :purple
 ```
 
-But missing numbers could mean that there are values defined externally we do not know about. So it is preferable not to raise an exception.
+But missing values could mean that there are values defined externally we do not know about. So it is preferable not to raise an exception.
 
 ```ruby
-ColorType[42] # => #<MetaEnum::MissingValue: 42}>
+ColorType[42] # => #<MetaEnum::MissingElement: 42}>
 ```
 
 Value and name can be retrieved from a `MetaEnum::Element`
