@@ -3,7 +3,7 @@ module MetaEnum
     attr_reader :number, :name, :data, :type
 
     def initialize(number, name, data, type)
-      @number = Integer(number)
+      @number = number
       @name = name.to_sym
       @data = data
       @type = type

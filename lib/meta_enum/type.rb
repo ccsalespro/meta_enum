@@ -1,6 +1,21 @@
 require 'set'
 
 module MetaEnum
+
+  # ValueNormalizationError is raised on when a value normalization fails. It wraps the underlying exception.
+  class ValueNormalizationError < StandardError
+    attr_reader :original_exception, :original_value
+
+    def initialize(original_exception, original_value)
+      @original_exception = original_exception
+      @original_value = original_value
+    end
+
+    def to_s
+      "original_exception: #{original_exception}, original_value: #{original_value}"
+    end
+  end
+
   class Type
     attr_reader :values, :values_by_number, :values_by_name
 
@@ -13,14 +28,18 @@ module MetaEnum
     # any other reason.
     #
     # e.g. MetaEnum::Type.new(small: [0, "Less than 10], large: [1, "At least 10"]
-    def initialize(values)
+    def initialize(
+      values,
+      value_normalizer: method(:Integer)
+    )
+      @value_normalizer = value_normalizer
       @values_by_number = {}
       @values_by_name = {}
       @values = Set.new
 
       values.each do |name, number_and_data|
         number_and_data = Array(number_and_data)
-        v = Value.new number_and_data[0], name, number_and_data[1], self
+        v = Value.new normalize_value(number_and_data[0]), name, number_and_data[1], self
         raise ArgumentError, "duplicate number: #{v.number}" if @values_by_number.key? v.number
         raise ArgumentError, "duplicate name: #{v.name}" if @values_by_name.key? v.name
         @values_by_number[v.number] = v
@@ -59,7 +78,7 @@ module MetaEnum
       when Symbol
         values_by_name.fetch(key)
       else
-        key = Integer(key)
+        key = normalize_value(key)
         values_by_number.fetch(key) { MissingValue.new key, self }
       end
     end
@@ -70,6 +89,13 @@ module MetaEnum
 
     def size
       values.size
+    end
+
+  private
+    def normalize_value(value)
+      @value_normalizer.call(value)
+    rescue StandardError => e
+      raise ValueNormalizationError.new(e, value)
     end
   end
 end
