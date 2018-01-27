@@ -17,7 +17,7 @@ module MetaEnum
   end
 
   class Type
-    attr_reader :values, :values_by_number, :values_by_name
+    attr_reader :elements, :elements_by_number, :elements_by_name
 
     # Initialize takes a single hash of name to number.
     #
@@ -29,66 +29,66 @@ module MetaEnum
     #
     # e.g. MetaEnum::Type.new(small: [0, "Less than 10], large: [1, "At least 10"]
     def initialize(
-      values,
+      elements,
       value_normalizer: method(:Integer)
     )
       @value_normalizer = value_normalizer
-      @values_by_number = {}
-      @values_by_name = {}
-      @values = Set.new
+      @elements_by_number = {}
+      @elements_by_name = {}
+      @elements = Set.new
 
-      values.each do |name, number_and_data|
+      elements.each do |name, number_and_data|
         number_and_data = Array(number_and_data)
-        v = Value.new normalize_value(number_and_data[0]), name, number_and_data[1], self
-        raise ArgumentError, "duplicate number: #{v.number}" if @values_by_number.key? v.number
-        raise ArgumentError, "duplicate name: #{v.name}" if @values_by_name.key? v.name
-        @values_by_number[v.number] = v
-        @values_by_name[v.name] = v
-        @values.add(v)
+        v = Element.new normalize_value(number_and_data[0]), name, number_and_data[1], self
+        raise ArgumentError, "duplicate number: #{v.number}" if @elements_by_number.key? v.number
+        raise ArgumentError, "duplicate name: #{v.name}" if @elements_by_name.key? v.name
+        @elements_by_number[v.number] = v
+        @elements_by_name[v.name] = v
+        @elements.add(v)
       end
 
-      @values_by_number.freeze
-      @values_by_name.freeze
-      @values.freeze
+      @elements_by_number.freeze
+      @elements_by_name.freeze
+      @elements.freeze
       freeze
     end
 
-    # [] is a "do what I mean" operator. It returns the Value from this type depending on the key.
+    # [] is a "do what I mean" operator. It returns the Element from this type depending on the key.
     #
-    # When key is a symbol, it is considered the name of the Value to return.
+    # When key is a symbol, it is considered the name of the Element to return.
     # Since symbols are used from number, it is considered an error if the key is
     # not found and it raises an exception.
     #
     # When key can be converted to an integer by Integer(), then it is
-    # considered the number of the Value to return. Retrieving by number is
+    # considered the number of the Element to return. Retrieving by number is
     # presumed to converting from external data where a missing value should not
-    # be considered fatal. In this case it returns a MissingValue is with number
+    # be considered fatal. In this case it returns a MissingElement is with number
     # as the key. This allows a Type to only specify the values is needs while
     # passing through the others unmodified.
     #
-    # Finally, when key is a MetaEnum::Value, it is simply returned (unless it
+    # Finally, when key is a MetaEnum::Element, it is simply returned (unless it
     # belongs to a different Type in which case an ArgumentError is raised).
     #
     # See #values_by_number and #values_by_name for non-fuzzy value selection.
     def [](key)
       case key
-      when Value, MissingValue
+      when Element, MissingElement
         raise ArgumentError, "wrong type" unless key.type == self
         key
       when Symbol
-        values_by_name.fetch(key)
+        elements_by_name.fetch(key)
       else
         key = normalize_value(key)
-        values_by_number.fetch(key) { MissingValue.new key, self }
+        elements_by_number.fetch(key) { MissingElement.new key, self }
       end
     end
 
     def inspect
-      sprintf('#<%s: {%s}>', self.class, values.to_a.map { |v| "#{v.name}: #{v.number}"}.join(", "))
+      sprintf('#<%s: {%s}>', self.class, elements.to_a.map { |v| "#{v.name}: #{v.number}"}.join(", "))
     end
 
     def size
-      values.size
+      elements.size
     end
 
   private

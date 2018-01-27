@@ -1,5 +1,5 @@
 module MetaEnum
-  class MissingValue
+  class MissingElement
     attr_reader :number, :type
 
     def initialize(number, type)

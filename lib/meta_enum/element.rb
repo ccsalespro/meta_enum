@@ -1,5 +1,5 @@
 module MetaEnum
-  class Value
+  class Element
     attr_reader :number, :name, :data, :type
 
     def initialize(number, name, data, type)

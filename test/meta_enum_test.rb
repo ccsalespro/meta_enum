@@ -20,7 +20,7 @@ class MetaEnumTest < Minitest::Test
 
   def test_type_index_finds_by_symbol
     type = MetaEnum::Type.new(red: 0, green: 1, blue: 2)
-    red = type.values_by_name[:red]
+    red = type.elements_by_name[:red]
     assert_equal red, type[:red]
   end
 
@@ -31,13 +31,13 @@ class MetaEnumTest < Minitest::Test
 
   def test_type_index_finds_by_number
     type = MetaEnum::Type.new(red: 0, green: 1, blue: 2)
-    red = type.values_by_number[0]
+    red = type.elements_by_number[0]
     assert_equal red, type[0]
   end
 
   def test_type_index_finds_by_string_converted_to_number
     type = MetaEnum::Type.new(red: 0, green: 1, blue: 2)
-    red = type.values_by_number[0]
+    red = type.elements_by_number[0]
     assert_equal red, type["0"]
   end
 
@@ -50,7 +50,7 @@ class MetaEnumTest < Minitest::Test
 
   def test_type_index_finds_by_value
     type = MetaEnum::Type.new(red: 0, green: 1, blue: 2)
-    red = type.values_by_name[:red]
+    red = type.elements_by_name[:red]
     assert_equal red, type[red]
   end
 
