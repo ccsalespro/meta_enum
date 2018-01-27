@@ -31,21 +31,21 @@ class MetaEnumTest < Minitest::Test
 
   def test_type_index_finds_by_number
     type = MetaEnum::Type.new(red: 0, green: 1, blue: 2)
-    red = type.elements_by_number[0]
+    red = type.elements_by_value[0]
     assert_equal red, type[0]
   end
 
-  def test_type_index_finds_by_string_converted_to_number
+  def test_type_index_finds_by_string_converted_to_value
     type = MetaEnum::Type.new(red: 0, green: 1, blue: 2)
-    red = type.elements_by_number[0]
+    red = type.elements_by_value[0]
     assert_equal red, type["0"]
   end
 
-  def test_type_index_missing_number_converted_to_unknown_value
+  def test_type_index_missing_value_converted_to_unknown_value
     type = MetaEnum::Type.new(red: 0, green: 1, blue: 2)
-    value = type[4]
-    assert_equal 4, value.number
-    assert_equal :missing_value, value.name
+    element = type[4]
+    assert_equal 4, element.value
+    assert_equal :missing_value, element.name
   end
 
   def test_type_index_finds_by_value
@@ -54,19 +54,19 @@ class MetaEnumTest < Minitest::Test
     assert_equal red, type[red]
   end
 
-  def test_value_equality_with_value
+  def test_element_equality_with_element
     type = MetaEnum::Type.new(red: 0, green: 1, blue: 2)
     assert_equal type[:red], type[:red]
     refute_equal type[:red], type[:blue]
   end
 
-  def test_value_equality_with_symbol
+  def test_element_equality_with_symbol
     type = MetaEnum::Type.new(red: 0, green: 1, blue: 2)
     assert_equal type[:red], :red
     refute_equal type[:red], :blue
   end
 
-  def test_value_equality_with_number
+  def test_element_equality_with_value
     type = MetaEnum::Type.new(red: 0, green: 1, blue: 2)
     assert_equal type[0], 0
     refute_equal type[0], 1
@@ -78,7 +78,7 @@ class MetaEnumTest < Minitest::Test
     refute_equal type[42], type[41]
   end
 
-  def test_missing_value_equality_with_number
+  def test_missing_element_equality_with_value
     type = MetaEnum::Type.new(red: 0, green: 1, blue: 2)
     assert_equal type[42], 42
     refute_equal type[42], 17

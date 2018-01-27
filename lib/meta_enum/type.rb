@@ -17,14 +17,14 @@ module MetaEnum
   end
 
   class Type
-    attr_reader :elements, :elements_by_number, :elements_by_name
+    attr_reader :elements, :elements_by_value, :elements_by_name
 
-    # Initialize takes a single hash of name to number.
+    # Initialize takes a single hash of name to value.
     #
     # e.g. MetaEnum::Type.new(red: 0, green: 1, blue: 2)
     #
     # Additional data can also be associated with each value by passing an array
-    # of [number, extra data]. This can be used for additional description or
+    # of [value, extra data]. This can be used for additional description or
     # any other reason.
     #
     # e.g. MetaEnum::Type.new(small: [0, "Less than 10], large: [1, "At least 10"]
@@ -33,21 +33,21 @@ module MetaEnum
       value_normalizer: method(:Integer)
     )
       @value_normalizer = value_normalizer
-      @elements_by_number = {}
+      @elements_by_value = {}
       @elements_by_name = {}
       @elements = Set.new
 
-      elements.each do |name, number_and_data|
-        number_and_data = Array(number_and_data)
-        v = Element.new normalize_value(number_and_data[0]), name, number_and_data[1], self
-        raise ArgumentError, "duplicate number: #{v.number}" if @elements_by_number.key? v.number
+      elements.each do |name, value_and_data|
+        value_and_data = Array(value_and_data)
+        v = Element.new normalize_value(value_and_data[0]), name, value_and_data[1], self
+        raise ArgumentError, "duplicate value: #{v.value}" if @elements_by_value.key? v.value
         raise ArgumentError, "duplicate name: #{v.name}" if @elements_by_name.key? v.name
-        @elements_by_number[v.number] = v
+        @elements_by_value[v.value] = v
         @elements_by_name[v.name] = v
         @elements.add(v)
       end
 
-      @elements_by_number.freeze
+      @elements_by_value.freeze
       @elements_by_name.freeze
       @elements.freeze
       freeze
@@ -79,7 +79,7 @@ module MetaEnum
         elements_by_name.fetch(key)
       else
         key = normalize_value(key)
-        elements_by_number.fetch(key) { MissingElement.new key, self }
+        elements_by_value.fetch(key) { MissingElement.new key, self }
       end
     end
 

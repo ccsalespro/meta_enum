@@ -1,9 +1,9 @@
 module MetaEnum
   class Element
-    attr_reader :number, :name, :data, :type
+    attr_reader :value, :name, :data, :type
 
-    def initialize(number, name, data, type)
-      @number = number
+    def initialize(value, name, data, type)
+      @value = value
       @name = name.to_sym
       @data = data
       @type = type
@@ -18,11 +18,10 @@ module MetaEnum
       false
     end
 
-    def to_i; number; end
     def to_s; name.to_s; end
 
     def inspect
-      "#<#{self.class}: #{name}: #{number}, data: #{data.inspect}>"
+      "#<#{self.class}: #{name}: #{value}, data: #{data.inspect}>"
     end
   end
 end
