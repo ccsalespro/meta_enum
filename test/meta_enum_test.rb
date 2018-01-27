@@ -84,4 +84,13 @@ class MetaEnumTest < Minitest::Test
     refute_equal type[42], 17
     refute_equal type[42], 1
   end
+
+  def test_type_with_string_value_normalizer
+    type = MetaEnum::Type.new({visa: "VS", mastercard: "MC", discover: "DS"}, value_normalizer: method(:String))
+    assert_equal type[:visa], type[:visa]
+    refute_equal type[:visa], type[:mastercard]
+    assert_equal type[:visa], :visa
+    assert_equal type[:visa], "VS"
+    assert_equal "VS", type[:visa].value
+  end
 end

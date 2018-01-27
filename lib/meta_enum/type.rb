@@ -28,6 +28,9 @@ module MetaEnum
     # any other reason.
     #
     # e.g. MetaEnum::Type.new(small: [0, "Less than 10], large: [1, "At least 10"]
+    #
+    # value_normalizer is a callable object that normalizes values. The default
+    # converts all values to integers. To allow string values use method(:String).
     def initialize(
       elements,
       value_normalizer: method(:Integer)
