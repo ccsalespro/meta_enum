@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.0.1 (February 8, 2018)
 
 * Fix MetaEnum::Type#inspect
 * Documentation improvements
