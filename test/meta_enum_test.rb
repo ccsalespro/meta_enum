@@ -18,6 +18,17 @@ class MetaEnumTest < Minitest::Test
     assert_equal "Blue", t[2].data
   end
 
+  def test_type_constructor_symbolizes_keys
+    t = MetaEnum::Type.new("red" => 0, "green" => 1, "blue" => 2)
+    assert_equal 3, t.size
+    assert t.elements_by_name.key?(:red)
+    assert t.elements_by_name.key?(:green)
+    assert t.elements_by_name.key?(:blue)
+    assert_equal :red, t[:red].name
+    assert_equal :green, t[:green].name
+    assert_equal :blue, t[:blue].name
+  end
+
   def test_type_index_finds_by_symbol
     type = MetaEnum::Type.new(red: 0, green: 1, blue: 2)
     red = type.elements_by_name[:red]
