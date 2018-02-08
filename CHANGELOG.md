@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+* Fix MetaEnum::Type#inspect
+* Documentation improvements
+
 ## 2.0.0 (January 27, 2018)
 
 Support non-integer values.
