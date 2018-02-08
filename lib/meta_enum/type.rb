@@ -59,14 +59,14 @@ module MetaEnum
     # [] is a "do what I mean" operator. It returns the Element from this type depending on the key.
     #
     # When key is a symbol, it is considered the name of the Element to return.
-    # Since symbols are used from number, it is considered an error if the key is
+    # Since symbols are used from code, it is considered an error if the key is
     # not found and it raises an exception.
     #
-    # When key can be converted to an integer by Integer(), then it is
-    # considered the number of the Element to return. Retrieving by number is
+    # When key can be converted to an integer by value_normalizer, then it is
+    # considered the value of the Element to return. Retrieving by value is
     # presumed to converting from external data where a missing value should not
-    # be considered fatal. In this case it returns a MissingElement is with number
-    # as the key. This allows a Type to only specify the values is needs while
+    # be considered fatal. In this case it returns a MissingElement is with value
+    # as the key. This allows a Type to only specify the values it needs while
     # passing through the others unmodified.
     #
     # Finally, when key is a MetaEnum::Element, it is simply returned (unless it
