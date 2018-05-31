@@ -104,4 +104,18 @@ class MetaEnumTest < Minitest::Test
     assert_equal type[:visa], "VS"
     assert_equal "VS", type[:visa].value
   end
+
+  def test_type_with_element_class
+    element_class = Class.new(MetaEnum::Element) do
+      def name
+        data
+      end
+    end
+
+    t = MetaEnum::Type.new({red: [0, "Red"], green: [1, "Green"], blue: [2, "Blue"]}, element_class: element_class)
+    assert_equal 3, t.size
+    assert_equal "Red", t[0].name
+    assert_equal "Green", t[1].name
+    assert_equal "Blue", t[2].name
+  end
 end

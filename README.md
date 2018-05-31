@@ -81,7 +81,29 @@ Non-integer values can be enabled by passing a value_normalizer to `MetaEnum::Ty
 CardType = MetaEnum::Type.new({visa: "VS", mastercard: "MC", discover: "DS"}, value_normalizer: method(:String))
 CardType[:visa] # => #<MetaEnum::Element: visa: "VS", data: nil>
 CardType["VS"] # => #<MetaEnum::Element: visa: "VS", data: nil>
-pry(main)> CardType["VS"].value # => "VS"
+CardType["VS"].value # => "VS"
+```
+
+The class used to create the elements can be customized with the `element_class` argument.
+
+```ruby
+AgeType = MetaEnum::Type.new(
+  {
+    child: [0, {description: "Less than 18", range: 0...18}],
+    adult: [1, {description: "At least 18", range: 18...Float::INFINITY}]
+  },
+  element_class: Class.new(MetaEnum::Element) {
+    def description
+      data[:description]
+    end
+
+    def range
+      data[:range]
+    end
+  }
+)
+AgeType[:child].description # => "Less than 18"
+AgeType[:child].range # => 0...18
 ```
 
 ## Development

@@ -31,9 +31,13 @@ module MetaEnum
     #
     # value_normalizer is a callable object that normalizes values. The default
     # converts all values to integers. To allow string values use method(:String).
+    #
+    # element_class is the class with which to create elements. It should be a
+    # sub-class of MetaEnum::Element (or otherwise match it's behavior).
     def initialize(
       elements,
-      value_normalizer: method(:Integer)
+      value_normalizer: method(:Integer),
+      element_class: MetaEnum::Element
     )
       @value_normalizer = value_normalizer
       @elements_by_value = {}
@@ -42,7 +46,7 @@ module MetaEnum
 
       elements.each do |name, value_and_data|
         value_and_data = Array(value_and_data)
-        v = Element.new normalize_value(value_and_data[0]), name, value_and_data[1], self
+        v = element_class.new normalize_value(value_and_data[0]), name, value_and_data[1], self
         raise ArgumentError, "duplicate value: #{v.value}" if @elements_by_value.key? v.value
         raise ArgumentError, "duplicate name: #{v.name}" if @elements_by_name.key? v.name
         @elements_by_value[v.value] = v
